@@ -12,7 +12,8 @@ resource "aws_iam_role" "this" {
                 Action = "sts:AssumeRole"
                 Effect = "Allow"
                 Principal = {
-                    AWS = "${data.aws_caller_identity.this.arn}"
+                    # AWS = "${data.aws_caller_identity.this.arn}"
+                    AWS = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"
                 }
             },
         ]
@@ -30,7 +31,8 @@ resource "aws_iam_role" "this2" {
                 Action = "sts:AssumeRole"
                 Effect = "Allow"
                 Principal = {
-                    AWS = "${data.aws_caller_identity.this.arn}"
+                    # AWS = "${data.aws_caller_identity.this.arn}"
+                    AWS = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"
                 }
             },
         ]
@@ -82,6 +84,15 @@ data "aws_iam_policy_document" "test_bucket" {
 resource "aws_s3_bucket_policy" "test" {
   bucket = aws_s3_bucket.test.id
   policy = data.aws_iam_policy_document.test_bucket.json
+}
+
+resource "aws_s3_object" "test_file" {
+  bucket = aws_s3_bucket.test.id
+  key    = "test_success.txt"
+  content = "This is a test file for IAM path-based S3 access demo.\n"
+
+  # 선택: 텍스트 파일임을 명시
+  content_type = "text/plain"
 }
 
 /*

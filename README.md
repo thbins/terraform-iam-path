@@ -118,7 +118,9 @@ terraform apply
 
 ## 테스트
 
-### `/dev/` Path Role 테스트 (성공 예상)
+### 방법 1: AWS CLI 사용
+
+#### `/dev/` Path Role 테스트 (성공 예상)
 ```bash
 # Role ARN 설정
 DEV_ROLE_ARN="arn:aws:iam::<ACCOUNT_ID>:role/dev/thbins-0"
@@ -155,6 +157,35 @@ export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' creds.json)
 # S3 목록 조회 (AccessDenied 에러)
 aws s3 ls s3://YOUR_BUCKET_NAME
 ```
+
+### 방법 2: AWS 콘솔 사용
+
+#### 콘솔에서 Role Switch 테스트
+
+1. **AWS 콘솔에 로그인** 후 우측 상단 계정명 클릭
+
+2. **"Switch Role" 선택**
+
+3. **Role 정보 입력:**
+   - Account: 현재 계정 ID
+   - Role: `dev/thbins-0` (또는 `dev/thbins-1`, `thbins-2`)
+   - Display Name: `dev-role-test` (임의)
+
+4. **S3 서비스로 이동하여 버킷 목록 확인:**
+   - `/dev/` path role (`thbins-0`, `thbins-1`): 버킷 목록 표시됨 ✅
+   - `/` path role (`thbins-2`): "Access Denied" 에러 또는 빈 목록 ❌
+
+#### 테스트 결과 예시
+
+**`/dev/` Path Role (thbins-0) - 성공:**
+![thbins-0 결과](docs/images/thbins-0.png)
+
+**`/` Path Role (thbins-2) - 실패:**
+![thbins-2 결과](docs/images/thbins-2.png)
+
+5. **원래 역할로 복귀:** 우측 상단에서 "Back to [원래계정명]" 클릭
+
+> **참고**: 콘솔 테스트는 AssumeRole 권한이 현재 사용자/역할에 설정되어 있어야 가능합니다.
 
 ## 정리
 
