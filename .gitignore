@@ -1,0 +1,25 @@
+# Terraform
+.terraform/
+.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+terraform.tfvars
+terraform.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform plan 파일
+*.plan
+
+# 로컬 환경 관련 파일
+.DS_Store
+*.swp
+*.swo
+
+# 편집기/IDE 설정
+.vscode/
+.idea/
