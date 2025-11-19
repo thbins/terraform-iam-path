@@ -48,6 +48,7 @@ variable "bucket_name" {
 
 resource "aws_s3_bucket" "test" {
   bucket = var.bucket_name
+  force_destroy = true # 버킷 안에 객체를 생성하기 때문에 해당 속성을 true로 지정한다.
 }
 
 data "aws_iam_policy_document" "test_bucket" {
